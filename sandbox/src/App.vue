@@ -1,34 +1,93 @@
 <script>
-import Counter from './components/Counter.vue';
-import BaseButton from './components/BaseButton.vue';
+import UserCard from "./components/user-card.vue";
+import BaseCounter from "./components/base-counter.vue";
+import BaseButton from "./components/base-button.vue";
+import BaseLayout from "./components/base-layout.vue";
 
 export default {
-    data() {
-        return {
-            message: 'Hello it works',
-            listOfNumbers: [1, 2, 3, 4, 5]
-        };
+  components: {
+    BaseButton,
+    BaseCounter,
+    BaseLayout,
+    UserCard,
+  },
+  data() {
+    return {
+      message: "Hello it works",
+      listOfNumbers: [
+        {
+          name: 1,
+          id: "6a887cd2-f0bf-4321-b192-92016f82a883",
+          list: [1, 2, 3],
+        },
+        {
+          name: 2,
+          id: "8d14d90b-2d47-473e-8293-d5c324111d0d",
+          list: [1, 2, 3],
+        },
+        {
+          name: 3,
+          id: "cd806d65-2309-4625-9104-dcd636cd79b5",
+          list: [1, 2, 3],
+        },
+        {
+          name: 4,
+          id: "00c939cd-fbf4-46d0-8e61-0bc2ce8a5332",
+          list: [1, 2, 3],
+        },
+        {
+          name: 5,
+          id: "295a8170-59c1-4462-9de1-3c9cd41cedab",
+          list: [1, 2, 3],
+        },
+      ],
+      userData: {
+        name: "Ben",
+        preferredFramework: "vue",
+        favoriteFood: "sushi",
+        favoriteNumbers: [8, 10, 12],
+      },
+    };
+  },
+  computed: {
+    refinedUserData() {
+      return {
+        name: this.userData.name,
+        food: this.userData.favoriteFood,
+      };
     },
-    components: { Counter, BaseButton }
-}
+  },
+  methods: {
+    changeName() {
+      this.userData.name = "Charlie";
+    },
+  },
+};
 </script>
 
 <template>
-  <Counter />
+  <BaseLayout>
+    <template v-slot:sidebar> Aside </template>
+    <template v-slot:main>
+      <UserCard :user="refinedUserData" @change-name="changeName" />
+    </template>
+    <template v-slot:footer>
+      <BaseCounter />
+    </template>
+  </BaseLayout>
+  <BaseButton :left="true"></BaseButton>
 
   <hr />
-
-  <h1>Listing, IfElse, For</h1>
-  <h3>If else logic:</h3>
   <p v-if="message.length % 2 === 0">Even: {{ message.toUpperCase() }}</p>
   <p v-else>Odd: {{ message }}</p>
-  <h3>Number List:</h3>
-  <ul>
-    <li v-for="number in listOfNumbers" :key="`item-${index}`">number: {{ number }}</li>
+  <ul v-for="(item, index) in listOfNumbers" :key="`item-${index}`">
+    <li>
+      {{ item.id }}
+      <ul>
+        <li v-for="(number, index) in item.list" :key="`number-${index}`">
+          {{ number }}
+        </li>
+      </ul>
+    </li>
   </ul>
-
-  <hr>
-  <BaseButton> Click me </BaseButton>
 </template>
-
-
