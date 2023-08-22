@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: large;
+    }
+    div,
+    p,
+    ul,
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+    th,
+    td {
+      padding: 0.5rem;
+    }
+  </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Star Wars</h1>
+    <div id="app">
+      <div style="display: flex; flex-direction: row; gap: 8px">
+        <input type="text" name="name" v-model="newCharacter.name" />
+        <select name="side" id="side" v-model="newCharacter.side">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+
+        <button v-on:click="addCharacter">Add Character</button>
+      </div>
+      <hr />
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Side</th>
+          <th>Favorite?</th>
+          <th>Actions</th>
+        </tr>
+        <tr v-if="listOfCharacters.length > 0" v-for="(character) in listOfCharacters">
+          <td>{{ character.name }}</td>
+          <td>{{ character.side }}</td>
+          <td>{{ character.favorite }}</td>
+          <td><button v-on:click="incrementCounter(character)">Favorite</button></td>
+        </tr>
+        <tr v-else>
+          <td colspan="2">No characters found</td>
+        </tr>
+      </table>
+      <hr />
+      <p>Favorite Percentage: {{ favoritePercentage }} {{ moreThanHalf }}</p>
+      <p>Light Side Percentage: {{ lightSidePercentage }}</p>
+      <p>Dark Side Percentage: {{ darkSidePercentage }}</p>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      // Vue 3
+      const { createApp } = Vue;
+
+      const app = createApp({
+        data() {
+          return {
+            message: "Hello it works",
+            newCharacter: {},
+            listOfCharacters: [
+              {
+                name: "Luke",
+                side: "light",
+                favorite: false,
+              },
+              {
+                name: "Darth Vader",
+                side: "dark",
+                favorite: false,
+              },
+              {
+                name: "Yoda",
+                side: "light",
+                favorite: false,
+              },
+              {
+                name: "Palpatine",
+                side: "dark",
+                favorite: false,
+              },
+            ],
+          };
+        },
+        computed: {
+          favoritePercentage() {
+            return this.listOfCharacters.filter((char) => char.favorite).length / this.listOfCharacters.length;
+          },
+          moreThanHalf() {
+            return this.favoritePercentage >= 0.5 ? "WOWW" : "";
+          },
+          lightSidePercentage() {
+            return this.listOfCharacters.filter((char) => char.side === "light").length / this.listOfCharacters.length;
+          },
+          darkSidePercentage() {
+            return this.listOfCharacters.filter((char) => char.side === "dark").length / this.listOfCharacters.length;
+          },
+        },
+        methods: {
+          incrementCounter(character) {
+            this.listOfCharacters.find((char) => char.name === character.name).favorite = !this.listOfCharacters.find(
+              (char) => char.name === character.name
+            ).favorite;
+          },
+          addCharacter() {
+            this.newCharacter.favorite = false;
+            this.listOfCharacters.push(this.newCharacter);
+            this.newCharacter = {};
+          },
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

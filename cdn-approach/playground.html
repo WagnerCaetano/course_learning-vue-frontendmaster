@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: large;
+    }
+    div, p, ul, li {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playground — Complete Intro to Vue 3</title>
+  </head>
+  <body>
+    <h1>Hello Frontend Masters!</h1>
+    <div id="app">
+      <h1>{{ displayCounterTitle }}</h1>
+      <p>{{ count }}</p>
+      <button v-on:click="incrementCounter">Increment Count</button>
+      <div>
+        <label for="incrementAmount">Increment by:</label>
+        <input type="number" v-model="incrementAmount" />
+      </div>
+
+      <hr>
+
+      <h1>Listing, IfElse, For</h1>
+      <h3>If else logic:</h3>
+      <p v-if="message.length % 2 ===0">Even: {{ message.toUpperCase() }}</p>
+      <p v-else>Odd: {{ message }}</pv-else>
+      <h3>Number List:</h3>
+      <ul>
+        <li v-for="number in listOfNumbers">number: {{ number }}</li>
+      </ul>
+      
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      // Vue 3
+      const { createApp } = Vue;
+
+      const app = createApp({
+        data() {
+          return {
+            message: "Hello it works",
+            count: 10,
+            counterTitle: "Counter Standard",
+            incrementAmount: 1,
+            listOfNumbers: [1,2,3,4,5]
+          };
+        },
+        computed: {
+          displayCounterTitle() {
+            if (this.count % 2 === 0) {
+              return "Counter Even";
+            }
+            return "Counter Odd";
+          }
+        },
+        methods: {
+          incrementCounter() {
+            this.count += this.incrementAmount;
+          }
+        },
+        watch: {
+          count(newValue, oldValue) {
+            if (newValue % 2 === 0) {
+              this.counterTitle = "Counter Even";
+            } else {
+              this.counterTitle = "Counter Odd";
+            }
+            console.log("newValue", newValue);
+          }
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>
