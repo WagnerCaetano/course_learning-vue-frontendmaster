@@ -1,18 +1,16 @@
-<script>
-export default {
-  data: () => ({
-    userList: [],
-  }),
-  created() {
-    this.fetchUsers()
-  },
-  methods: {
-    async fetchUsers() {
-       this.userList = await fetch("https://jsonplaceholder.typicode.com/users/")
-        .then((response) => response.json())
-    }
-  }
-}</script>
+<script setup>
+import { userList } from "../composables/useUserStore";
+
+async function fetchUsers() {
+  const response = await fetch(
+    "https://jsonplaceholder.typicode.com/users/"
+  ).then((response) => response.json());
+
+  return response;
+}
+
+userList.value = await fetchUsers();
+</script>
 
 <template>
   <main>
